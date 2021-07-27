@@ -12,7 +12,10 @@ func IsAuth(c *gin.Context) {
 	token, err := utils.ExtractToken(c)
 
 	if err != nil {
-		c.AbortWithError(404, err)
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": err.Error(),
+		})
+		return
 	}
 	jwt_secret := utils.GetEnv("JWT_SECRET", "secret")
 	check_token, err := jwt.ParseWithClaims(token, &jwt.StandardClaims{}, func(t *jwt.Token) (interface{}, error) {
@@ -20,6 +23,9 @@ func IsAuth(c *gin.Context) {
 	})
 
 	if err != nil || !check_token.Valid {
-		c.AbortWithError(http.StatusUnauthorized, err)
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": err.Error(),
+		})
+		return
 	}
 }
