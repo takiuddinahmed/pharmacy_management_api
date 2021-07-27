@@ -9,45 +9,43 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Drugs(c *gin.Context) {
-	var drugs []models.Drug
-	// var drug models.Drug
-	// database.DB.Model(&drug).Find(&drugs)
-	// database.DB.Preload("Company").Preload("GenericName").Find(&drugs)
-	// database.DB.Joins("Company").Joins("GenericName").Find(&drugs)
-	database.DB.Find(&drugs)
-	c.JSON(http.StatusOK, drugs)
+func Customers(c *gin.Context) {
+	var customers []models.Customer
+
+	database.DB.Find(&customers)
+
+	c.JSON(http.StatusOK, customers)
 }
 
-func CreateDrug(c *gin.Context) {
-	var drug models.Drug
+func CreateCustomer(c *gin.Context) {
+	var customer models.Customer
 
-	if err := c.ShouldBindJSON(&drug); err != nil {
+	if err := c.ShouldBindJSON(&customer); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})
 		return
 	}
 
-	result := database.DB.Create(&drug)
+	result := database.DB.Create(&customer)
 
 	if result.Error != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, result.Error)
 		return
 	}
 
-	c.JSON(http.StatusOK, drug)
+	c.JSON(http.StatusOK, customer)
 
 }
 
-func GetDrug(c *gin.Context) {
+func GetCustomer(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	drug := models.Drug{
+	customer := models.Customer{
 		Id: uint(id),
 	}
 
-	result := database.DB.Preload("Company").Preload("GenericName").First(&drug)
+	result := database.DB.First(&customer)
 
 	if result.Error != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, 
@@ -56,17 +54,17 @@ func GetDrug(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, drug)
+	c.JSON(http.StatusOK, customer)
 }
 
-func UpdateDrug(c *gin.Context) {
+func UpdateCustomer(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	drug := models.Drug{
+	customer := models.Customer{
 		Id: uint(id),
 	}
-	c.ShouldBindJSON(&drug)
-	result := database.DB.Model(&drug).Updates(&drug)
+	c.ShouldBindJSON(&customer)
+	result := database.DB.Model(&customer).Updates(&customer)
 
 	if result.Error != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
@@ -74,17 +72,17 @@ func UpdateDrug(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusOK, drug)
+	c.JSON(http.StatusOK, customer)
 }
 
-func DeleteDrug(c *gin.Context) {
+func DeleteCustomer(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
-	drug := models.Drug{
+	customer := models.Customer{
 		Id: uint(id),
 	}
 
-	result := database.DB.Delete(&drug)
+	result := database.DB.Delete(&customer)
 
 	if result.Error != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{

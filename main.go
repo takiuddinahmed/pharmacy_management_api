@@ -55,5 +55,15 @@ func main() {
 	drug.PUT("/:id",controllers.UpdateDrug)
 	drug.DELETE("/:id",controllers.DeleteDrug)
 
+	customer := api.Group("customer")
+	customer.GET("/",controllers.Customers)
+	customer.POST("/",controllers.CreateCustomer)
+	customer.GET("/:id",controllers.GetCustomer)
+	customer.PUT("/:id",controllers.UpdateCustomer)
+	customer.DELETE("/:id",controllers.DeleteCustomer)
+
+
+
+
 	app.Run(":8080")
 }

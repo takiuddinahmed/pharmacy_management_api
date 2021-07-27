@@ -1,10 +1,10 @@
 package models
 
 type Customer struct {
-	Id uint
-	Name string
-	Info string
-	Phone string
-	Adress string
-	Due string
+	Id uint  `json:"id"`
+	Name string `json:"name" gorm:"not null"`
+	Info string `json:"info"`
+	Phone string `json:"phone"`
+	Address string 	`json:"address"`	
+	Due float64 `json:"due"` 
 }

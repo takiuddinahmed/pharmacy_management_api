@@ -37,5 +37,6 @@ func AutoMigrate() {
 		models.Company{},
 		models.GenericName{},
 		models.Drug{},
+		models.Customer{},
 	)
 }
